@@ -1,6 +1,10 @@
 package com.streamingplatform_backend.music.entity;
 
+import com.streamingplatform_backend.music.util.StringListConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,8 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.net.URL;
+import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -44,6 +48,10 @@ public class Music {
 
 	@Schema(description = "아티스트")
 	private URL artistPic;
+
+	@Schema(description = "카테고리")
+	@Convert(converter = StringListConverter.class)
+	private List<String> category;
 
 	public void updateMusic(Music music) {
 		this.title = music.getTitle();
