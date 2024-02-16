@@ -1,5 +1,7 @@
 package com.streamingplatform_backend.music.apicontroller;
 
+import com.streamingplatform_backend.music.dto.LikesMusicDto;
+import com.streamingplatform_backend.music.dto.MusicDto;
 import com.streamingplatform_backend.music.entity.Music;
 import com.streamingplatform_backend.music.service.MusicService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +27,8 @@ public class MusicApiController {
 
 
 	@PostMapping(path = "/api/musics/save", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Music save(@RequestBody Music music) {
-		return musicService.save(music);
+	public Music save(@RequestBody Music musicDto) {
+		return musicService.save(musicDto);
 	}
 
 	@PatchMapping(path = "/api/musics/update", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,13 +37,18 @@ public class MusicApiController {
 	}
 
 	@GetMapping(path = "/api/musics/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Music findById (@PathVariable (name = "id") Long id)  {
+	public MusicDto findById (@PathVariable (name = "id") Long id)  {
 		return musicService.findById(id);
 	}
 
 	@GetMapping(path = "/api/musics/finds", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Music> find() {
+	public List<MusicDto> find() {
 		return musicService.find();
+	}
+
+	@GetMapping(path = "/api/musics/findLikesMusicList", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<LikesMusicDto> findLikesMusicList() {
+		return musicService.findLikesMusicList();
 	}
 
 	@DeleteMapping(path = "/api/musics/remove/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

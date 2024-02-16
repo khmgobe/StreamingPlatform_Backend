@@ -1,19 +1,24 @@
 package com.streamingplatform_backend.music.entity;
 
+import com.streamingplatform_backend.music.dto.LikesDto;
+import com.streamingplatform_backend.music.dto.MusicDto;
 import com.streamingplatform_backend.music.util.StringListConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.net.URL;
 import java.util.List;
 
@@ -28,7 +33,8 @@ import static lombok.AccessLevel.PROTECTED;
 public class Music {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(description = "음악 아이디", hidden = true)
+	@Schema(description = "음악 아이디")
+	@Column(name = "music_id")
 	private Long id;
 
 	@Schema(description = "음악 제목")
@@ -51,7 +57,10 @@ public class Music {
 
 	@Schema(description = "카테고리")
 	@Convert(converter = StringListConverter.class)
-	private List<String> category;
+	private List<String> genre;
+
+	@Schema(description = "음악 경로")
+	private String audioFile;
 
 	public void updateMusic(Music music) {
 		this.title = music.getTitle();
@@ -60,5 +69,12 @@ public class Music {
 		this.releaseDate = music.getReleaseDate();
 		this.image = music.getImage();
 		this.artistPic = music.getArtistPic();
+		this.genre = music.getGenre();
+		this.audioFile = music.getAudioFile();
 	}
+
+	public MusicDto of(Music music) {
+		return MusicDto.builder().title(music.getTitle()).build();
+	}
+
 }

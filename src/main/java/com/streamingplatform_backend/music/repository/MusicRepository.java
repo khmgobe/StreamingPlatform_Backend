@@ -1,5 +1,6 @@
 package com.streamingplatform_backend.music.repository;
 
+import com.streamingplatform_backend.music.dto.MusicDto;
 import com.streamingplatform_backend.music.entity.Music;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,6 +30,10 @@ public class MusicRepository {
 	public List<Music> find() {
 		return entityManager.createQuery("select m from Music m", Music.class).getResultList();
 	}
+
+//	public List<Music> findLikesMusicList() {
+//		return entityManager.createQuery("select m from Music m join fetch m.likes", Music.class).getResultList();
+//	}
 
 	public void remove(Long id) {
 		 entityManager.createQuery("delete from Music m where m.id =:id").setParameter("id", id).executeUpdate();
