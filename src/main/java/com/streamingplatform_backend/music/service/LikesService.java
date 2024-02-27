@@ -1,11 +1,8 @@
 package com.streamingplatform_backend.music.service;
 
 import com.streamingplatform_backend.music.dto.LikesDto;
-import com.streamingplatform_backend.music.dto.LikesMusicDto;
-import com.streamingplatform_backend.music.dto.MusicDto;
 import com.streamingplatform_backend.music.entity.Likes;
 import com.streamingplatform_backend.music.repository.LikesRepository;
-import com.streamingplatform_backend.music.repository.MusicRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,19 +18,20 @@ public class LikesService {
 
 	private final LikesRepository likesRepository;
 
-	public LikesDto save(Likes likes) {
-		Long id = likes.getMusic().getId();
-		log.info("id = {} ", id);
-		likesRepository.save(likes);
-		return LikesDto.builder().build();
+	private final MusicService musicService;
+
+	public LikesDto save(LikesDto likesDto) {
+		likesRepository.save(likesDto.toEntity());
+		musicService.increaseLike(likesDto.simplyMusic().music_id());
+		return LikesDto.of(likesDto.toEntity().getId(), likesDto.simplyMusic());
 	}
 
 	public List<Likes> findLikesMusicList() {
 		return likesRepository.findLikesMusicList();
 	}
 
-	public LikesDto remove(Long id) {
-		likesRepository.remove(id);
-		return LikesDto.builder().build();
+	public void remove(LikesDto likesDto) {
+		likesRepository.remove(likesDto);
+		musicService.decreaseLike(likesDto.simplyMusic().music_id());
 	}
 }

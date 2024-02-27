@@ -18,8 +18,8 @@ public class LikesRepository {
 		entityManager.persist(likes);
 	}
 
-	 public void remove(Long id) {
-		entityManager.createQuery("delete from Likes l where l.id =: id").setParameter("id", id).executeUpdate();
+	 public void remove(LikesDto likesDto) {
+		entityManager.createQuery("delete from Likes l where l.id =: id").setParameter("id", likesDto.id()).executeUpdate();
 		entityManager.clear();
 		entityManager.flush();
 	 }

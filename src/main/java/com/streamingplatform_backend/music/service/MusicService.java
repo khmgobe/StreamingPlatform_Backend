@@ -1,17 +1,17 @@
 package com.streamingplatform_backend.music.service;
 
-import com.streamingplatform_backend.music.dto.LikesMusicDto;
 import com.streamingplatform_backend.music.dto.MusicDto;
 import com.streamingplatform_backend.music.entity.Music;
 import com.streamingplatform_backend.music.repository.MusicRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class MusicService {
@@ -34,20 +34,22 @@ public class MusicService {
 		return music.stream().map(MusicDto::of).toList();
 	}
 
-	public List<LikesMusicDto> findLikesMusicList() {
-//		List<Music> music = musicRepository.findLikesMusicList();
-//		 return music.stream().map(LikesMusicDto::of).toList();
-		return null;
-	}
-
 	public MusicDto findById(Long id){
 		Music music = musicRepository.findById(id);
-		return music.of(music);
+		return music.of();
 	}
 
 	public Music remove(Long id) {
 		Music music = musicRepository.findById(id);
 		musicRepository.remove(id);
 		return music;
+	}
+
+	public void increaseLike(Long id) {
+		musicRepository.increaseLike(id);
+	}
+
+	public void decreaseLike(Long id) {
+		musicRepository.decreaseLike(id);
 	}
 }

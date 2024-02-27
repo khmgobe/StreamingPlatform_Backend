@@ -22,17 +22,12 @@ public class LikesApiController {
 	private final LikesService likesService;
 
 	@PostMapping("/api/Likes/save")
-	public LikesDto save(@RequestBody Likes likes){
+	public LikesDto save(@RequestBody LikesDto likes){
 			return likesService.save(likes);
 	}
 
-	@DeleteMapping("/api/Likes/remove/{id}")
-	public LikesDto remove(@PathVariable Long id) {
-		return likesService.remove(id);
-	}
-
-	@GetMapping("/api/Likes/findLikesMusicList")
-	public List<Likes> findLikesMusicList() {
-		return likesService.findLikesMusicList();
+	@DeleteMapping("/api/Likes/remove")
+	public void remove(@RequestBody LikesDto likesDto) {
+		 likesService.remove(likesDto);
 	}
 }

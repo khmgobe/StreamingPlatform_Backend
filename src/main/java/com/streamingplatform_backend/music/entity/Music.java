@@ -8,10 +8,12 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 
 import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -59,8 +62,8 @@ public class Music {
 	@Convert(converter = StringListConverter.class)
 	private List<String> genre;
 
-	@Schema(description = "음악 경로")
-	private String audioFile;
+	@Schema(description = "음악 좋아요")
+	private Long likes;
 
 	public void updateMusic(Music music) {
 		this.title = music.getTitle();
@@ -70,11 +73,14 @@ public class Music {
 		this.image = music.getImage();
 		this.artistPic = music.getArtistPic();
 		this.genre = music.getGenre();
-		this.audioFile = music.getAudioFile();
 	}
 
-	public MusicDto of(Music music) {
-		return MusicDto.builder().title(music.getTitle()).build();
+	public MusicDto of() {
+		return MusicDto.builder().title(title).build();
+	}
+
+	public Music from(MusicDto musicDto) {
+		return Music.builder().id(id).title(title).artist(artist).album(album).releaseDate(releaseDate).image(image).artistPic(artistPic).genre(genre).likes(likes).build();
 	}
 
 }

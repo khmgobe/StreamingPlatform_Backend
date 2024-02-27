@@ -31,9 +31,6 @@ public class MusicRepository {
 		return entityManager.createQuery("select m from Music m", Music.class).getResultList();
 	}
 
-//	public List<Music> findLikesMusicList() {
-//		return entityManager.createQuery("select m from Music m join fetch m.likes", Music.class).getResultList();
-//	}
 
 	public void remove(Long id) {
 		 entityManager.createQuery("delete from Music m where m.id =:id").setParameter("id", id).executeUpdate();
@@ -41,4 +38,18 @@ public class MusicRepository {
 		 entityManager.clear();
 	}
 
+	public void increaseLike(Long id) {
+		entityManager.createQuery("update Music m set m.likes = 1 where m.id = :id")
+				.setParameter("id", id)
+				.executeUpdate();
+		entityManager.flush();
+		entityManager.clear();
+	}
+
+	public void decreaseLike(Long id) {
+		entityManager.createQuery("update Music m set m.likes = 0 where m.id =:id")
+				.setParameter("id", id).executeUpdate();
+		entityManager.flush();
+				entityManager.clear();
+	}
 }

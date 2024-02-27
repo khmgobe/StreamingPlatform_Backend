@@ -1,6 +1,5 @@
 package com.streamingplatform_backend.music.apicontroller;
 
-import com.streamingplatform_backend.music.dto.LikesMusicDto;
 import com.streamingplatform_backend.music.dto.MusicDto;
 import com.streamingplatform_backend.music.entity.Music;
 import com.streamingplatform_backend.music.service.MusicService;
@@ -46,13 +45,23 @@ public class MusicApiController {
 		return musicService.find();
 	}
 
-	@GetMapping(path = "/api/musics/findLikesMusicList", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<LikesMusicDto> findLikesMusicList() {
-		return musicService.findLikesMusicList();
-	}
+//	@GetMapping(path = "/api/musics/findLikesMusicList", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public List<LikesMusicDto> findLikesMusicList() {
+//		return musicService.findLikesMusicList();
+//	}
 
 	@DeleteMapping(path = "/api/musics/remove/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Music remove (@PathVariable(name = "id") Long id) {
 		return musicService.remove(id);
+	}
+
+	@PatchMapping(path = "/api/musics/like/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void increaseLike (@PathVariable(name = "id") Long id) {
+		 musicService.increaseLike(id);
+	}
+
+	@PatchMapping(path = "/api/musics/unlike/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void decreaseLike (@PathVariable(name = "id") Long id) {
+		musicService.decreaseLike(id);
 	}
 }
